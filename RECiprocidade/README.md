@@ -1,3 +1,0 @@
-# RECiprocidade
-
-em construção ...
