@@ -1,0 +1,345 @@
+/* Awwwards-inspired layout, with custom colors for navbar and highlights */
+
+/* Font and base */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', Arial, sans-serif;
+    background: #f7fbfd;
+    color: #18192b;
+    min-height: 100vh;
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+/* Navbar */
+.main-header {
+    background: #009FE3;
+    box-shadow: 0 2px 16px rgba(47,95,169,0.08);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 18px 32px;
+}
+.logo {
+    height: 52px;
+    width: auto;
+    margin-right: 10px; /* Aproxima o nome da logo */
+    vertical-align: middle;
+}
+.brand-title {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    vertical-align: middle;
+    letter-spacing: 1px;
+    margin-right: 32px;
+    margin-left: 0; /* Remove espaço extra à esquerda */
+    display: inline-block;
+}
+.header-content nav {
+    display: flex;
+    gap: 32px;
+}
+.header-content nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.08rem;
+    letter-spacing: 0.2px;
+    transition: color 0.2s;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+}
+.header-content nav a:hover {
+    color: #2F5FA9;
+    border-bottom: 2px solid #2F5FA9;
+}
+.header-actions .btn {
+    background: #2F5FA9;
+    color: #fff;
+    border: none;
+    border-radius: 18px;
+    padding: 8px 22px;
+    font-weight: 700;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s, transform 0.18s;
+    box-shadow: none;
+}
+.header-actions .btn-signup {
+    background: #fff;
+    color: #2F5FA9;
+}
+.header-actions .btn:hover {
+    background: #009FE3;
+    color: #fff;
+    transform: scale(1.06);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    margin: 56px 0 40px 0;
+}
+.hero h1 {
+    font-size: 2.8rem;
+    color: #2F5FA9;
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: 1.2px;
+    font-family: 'Inter', Arial, sans-serif;
+}
+.hero p {
+    color: #4b5a6a;
+    font-size: 1.22rem;
+    margin-top: 0;
+    font-weight: 400;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Main Layout */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 48px;
+    max-width: 1600px;
+    margin: 0 auto 48px auto;
+    padding: 0 16px;
+}
+
+/* Sidebar */
+.sidebar {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(47,95,169,0.10);
+    padding: 32px 20px;
+    min-width: 270px;
+    max-width: 320px;
+    margin-top: 0;
+}
+.filter-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.filter-btn {
+    flex: 1;
+    background: #f3f4f6;
+    color: #2F5FA9;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.filter-btn.active, .filter-btn:hover {
+    background: #2F5FA9;
+    color: #fff;
+}
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 340px;
+    overflow-y: auto;
+}
+.list li {
+    background: #f3f4f6;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #2F5FA9;
+    transition: background 0.2s;
+}
+.list li:hover {
+    background: #009FE3;
+    color: #fff;
+}
+
+/* Cards Section */
+.cards-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2F5FA9;
+    margin: 36px 0 24px 0;
+    letter-spacing: 1px;
+}
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 32px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 0;
+    box-sizing: border-box;
+}
+
+/* Card Styles */
+.card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px #2f5fa91a;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+.card:hover {
+    box-shadow: 0 8px 32px rgba(47,95,169,0.16);
+    border-color: #009FE3;
+    transform: translateY(-4px) scale(1.012);
+}
+.card-header {
+    background: none;
+    color: #2F5FA9;
+    border-radius: 0;
+    padding: 0;
+    font-weight: 700;
+    font-size: 1.18rem;
+    margin-bottom: 18px;
+    box-shadow: none;
+    display: block;
+}
+.card-body h3 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+    color: #18192b;
+}
+.card-body p {
+    color: #4b5a6a;
+    font-size: 1.08rem;
+    margin-bottom: 16px;
+    margin-top: 0;
+}
+.card-info-list {
+    margin: 18px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+.card-info-list li {
+    margin-bottom: 8px;
+    font-size: 1.01rem;
+    color: #2F5FA9;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card-info-list li strong {
+    color: #18192b;
+    font-weight: 700;
+    margin-right: 4px;
+}
+.card-credenciais-title {
+    font-weight: 700;
+    color: #18192b;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+    letter-spacing: 0.2px;
+}
+.card-credenciais {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin-bottom: 0;
+}
+.card-credencial {
+    background: #f7fbfd;
+    color: #2F5FA9;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.97rem;
+    font-weight: 600;
+    border: 1px solid #e5eaf1;
+    margin-bottom: 6px;
+    transition: background 0.18s, color 0.18s;
+    text-decoration: none;
+    display: inline-block;
+}
+.card-credencial:hover {
+    background: #2F5FA9;
+    color: #fff;
+    border-color: #2F5FA9;
+}
+.card-salario {
+    margin: 10px 0 0 0;
+    color: #18192b;
+    font-size: 1.01rem;
+}
+.card-salario strong {
+    font-weight: 700;
+    color: #2F5FA9;
+}
+.card-empregos {
+    color: #2F5FA9;
+    font-size: 1.01rem;
+    margin-bottom: 10px;
+}
+
+/* Remover espaço reservado para imagem nos cartões de curso */
+.curso-img {
+    display: none;
+}
+
+/* Ajuste para centralizar e dar espaçamento ao botão */
+.curso-card-ebac .btn-main {
+    margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .card {
+        padding: 18px 8px 14px 8px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 8px;
+    }
+    .section-title {
+        font-size: 1.4rem;
+    }
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .card {
+        width: 100%;
+        max-width: 100%;
+        padding: 24px 16px;
+    }
+}
