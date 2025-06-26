@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>RECiprocidade | ONGs & Cursos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Importa a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Importa o arquivo de estilos externo -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Define o layout horizontal dos filtros e espaçamento abaixo da navbar */
+        .filters-horizontal {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            align-items: flex-end;
+            margin-top: 120px; /* Espaço para o dropdown não sobrepor a navbar */
+            flex-wrap: wrap;
+        }
+        /* Define o layout vertical dos grupos de filtros */
+        .filter-group {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 18px;
+            display: flex;
+        }
+        /* Estiliza os rótulos dos filtros */
+        .filter-group label {
+            font-weight: 700;
+            color: #2F5FA9;
+            margin-bottom: 4px;
+        }
+        /* Estiliza os selects dos filtros */
+        .filter-group select {
+            min-width: 200px;
+            max-width: 260px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #e5eaf1;
+            height: 40px; /* Altura padrão do select */
+        }
+        /* Ajusta altura para selects múltiplos ou com atributo size */
+        .filter-group select[multiple], .filter-group select[size] {
+            height: auto;
+        }
+        /* Deixa as iniciais do título da seção hero em maiúsculo */
+        .hero h1 {
+            text-transform: capitalize;
+        }
+        /* Aumenta o tamanho da logo na navbar */
+        .logo {
+            height: 64px;
+            width: auto;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho principal com logo, nome do site, navegação e botões -->
+    <header class="main-header">
+        <div class="header-content">
+            <!-- Logo do site -->
+            <img src="images/logo.png" alt="Logo" class="logo">
+            <!-- Nome do site ao lado da logo -->
+            <span class="brand-title">RECiprocidade</span>
+            <!-- Navegação principal -->
+            <nav>
+                <a href="#">Início</a>
+                <a href="#">Empresas</a>
+                <a href="#">ONGs</a>
+                <a href="#">Projetos</a>
+                <a href="#">Cursos</a>
+            </nav>
+            <!-- Botões de entrar e cadastrar -->
+            <div class="header-actions">
+                <button class="btn btn-login">Entrar</button>
+                <button class="btn btn-login" style="margin-left:12px;">Cadastrar</button>
+            </div>
+        </div>
+    </header>
+    <!-- Seção principal com título, descrição e filtros -->
+    <section class="hero">
+        <!-- Título principal da página -->
+        <h1>Transforme o futuro com impacto social</h1>
+        <!-- Descrição da proposta do site -->
+        <p>Descubra ONGs e projetos que estão mudando vidas. Conecte-se, aprenda e faça parte do ecossistema de inovação social.</p>
+        <!-- Barra de filtros horizontal -->
+        <div class="filters-horizontal">
+            <!-- Filtro por ONG -->
+            <div class="filter-group">
+                <label for="ong-filter">Filtrar por ONG:</label>
+                <select id="ong-filter" onchange="filterAll()">
+                    <option value="all">Todas as ONGs</option>
+                    <!-- Lista de opções de ONGs -->
+                    <option value="Ação Solidária">Ação Solidária</option>
+                    <option value="Mãos Unidas">Mãos Unidas</option>
+                    <option value="Verde Vida">Verde Vida</option>
+                    <option value="Mesa Farta">Mesa Farta</option>
+                    <option value="Vida Ativa">Vida Ativa</option>
+                    <option value="Bem Viver">Bem Viver</option>
+                    <option value="Casa Menina Mulher">Casa Menina Mulher</option>
+                    <option value="Ler é Viver">Ler é Viver</option>
+                    <option value="Mulheres Unidas">Mulheres Unidas</option>
+                    <option value="Elas Empreendem">Elas Empreendem</option>
+                    <option value="Água Viva">Água Viva</option>
+                    <option value="Vida Limpa">Vida Limpa</option>
+                    <option value="Sol para Todos">Sol para Todos</option>
+                    <option value="Energia Viva">Energia Viva</option>
+                    <option value="Juventude Ativa">Juventude Ativa</option>
+                    <option value="Inova Comunidade">Inova Comunidade</option>
+                    <option value="Estrada Nova">Estrada Nova</option>
+                    <option value="Acessível Já">Acessível Já</option>
+                    <option value="Diversidade Viva">Diversidade Viva</option>
+                    <option value="Cidade Verde">Cidade Verde</option>
+                    <option value="Viva Bairro">Viva Bairro</option>
+                    <option value="EcoAção">EcoAção</option>
+                    <option value="Recicla Recife">Recicla Recife</option>
+                    <option value="Verde Futuro">Verde Futuro</option>
+                    <option value="Clima Positivo">Clima Positivo</option>
+                    <option value="Onda Azul">Onda Azul</option>
+                    <option value="Vida Marinha">Vida Marinha</option>
+                    <option value="Natureza Ativa">Natureza Ativa</option>
+                    <option value="EcoTerra">EcoTerra</option>
+                    <option value="Direito Já">Direito Já</option>
+                    <option value="Vozes Livres">Vozes Livres</option>
+                    <option value="Rede Solidária">Rede Solidária</option>
+                    <option value="Ação Coletiva">Ação Coletiva</option>
+                </select>
+            </div>
+            <!-- Filtro por Projeto -->
+            <div class="filter-group">
+                <label for="project-filter">Filtrar por Projeto:</label>
+                <select id="project-filter" onchange="filterAll()">
+                    <option value="all">Todos os Projetos</option>
+                    <!-- Lista de opções de projetos -->
+                    <option value="Projeto Esperança">Projeto Esperança</option>
+                    <option value="Renda para Todos">Renda para Todos</option>
+                    <option value="Horta Comunitária">Horta Comunitária</option>
+                    <option value="Alimente-se Bem">Alimente-se Bem</option>
+                    <option value="Projeto Saúde em Movimento">Projeto Saúde em Movimento</option>
+                    <option value="Saúde para Todos">Saúde para Todos</option>
+                    <option value="Projeto Futuro Digital">Projeto Futuro Digital</option>
+                    <option value="Educação para o Amanhã">Educação para o Amanhã</option>
+                    <option value="Projeto Igualdade Já">Projeto Igualdade Já</option>
+                    <option value="Mulheres no Comando">Mulheres no Comando</option>
+                    <option value="Projeto Água para Todos">Projeto Água para Todos</option>
+                    <option value="Saneamento para Viver">Saneamento para Viver</option>
+                    <option value="Projeto Energia Limpa">Projeto Energia Limpa</option>
+                    <option value="Energia para o Futuro">Energia para o Futuro</option>
+                    <option value="Trabalho Jovem">Trabalho Jovem</option>
+                    <option value="Inovação Social">Inovação Social</option>
+                    <option value="Infraestrutura para Todos">Infraestrutura para Todos</option>
+                    <option value="Inclusão Sem Barreiras">Inclusão Sem Barreiras</option>
+                    <option value="Diversidade em Foco">Diversidade em Foco</option>
+                    <option value="Cidade Sustentável">Cidade Sustentável</option>
+                    <option value="Comunidade Viva">Comunidade Viva</option>
+                    <option value="Consumo Consciente">Consumo Consciente</option>
+                    <option value="Recicla Mais">Recicla Mais</option>
+                    <option value="Clima em Ação">Clima em Ação</option>
+                    <option value="Energia Verde">Energia Verde</option>
+                    <option value="Mar Limpo">Mar Limpo</option>
+                    <option value="Proteja o Oceano">Proteja o Oceano</option>
+                    <option value="Floresta Viva">Floresta Viva</option>
+                    <option value="Biodiversidade em Foco">Biodiversidade em Foco</option>
+                    <option value="Justiça para Todos">Justiça para Todos</option>
+                    <option value="Cidadania Ativa">Cidadania Ativa</option>
+                    <option value="Parcerias do Bem">Parcerias do Bem</option>
+                    <option value="Colaboração que Transforma">Colaboração que Transforma</option>
+                </select>
+            </div>
+            <!-- Filtro por ODS -->
+            <div class="filter-group">
+                <label for="ods-filter">Filtrar por ODS:</label>
+                <select id="ods-filter" onchange="filterAll()">
+                    <option value="all">Todos</option>
+                    <!-- Lista de opções de ODS -->
+                    <option value="ods1">ODS 1 - Erradicação da pobreza</option>
+                    <option value="ods2">ODS 2 - Fome zero e agricultura sustentável</option>
+                    <option value="ods3">ODS 3 - Saúde e bem-estar</option>
+                    <option value="ods4">ODS 4 - Educação de qualidade</option>
+                    <option value="ods5">ODS 5 - Igualdade de gênero</option>
+                    <option value="ods6">ODS 6 - Água potável e saneamento</option>
+                    <option value="ods7">ODS 7 - Energia limpa e acessível</option>
+                    <option value="ods8">ODS 8 - Trabalho decente e crescimento econômico</option>
+                    <option value="ods9">ODS 9 - Indústria, inovação e infraestrutura</option>
+                    <option value="ods10">ODS 10 - Redução das desigualdades</option>
+                    <option value="ods11">ODS 11 - Cidades e comunidades sustentáveis</option>
+                    <option value="ods12">ODS 12 - Consumo e produção responsáveis</option>
+                    <option value="ods13">ODS 13 - Ação contra a mudança global do clima</option>
+                    <option value="ods14">ODS 14 - Vida na água</option>
+                    <option value="ods15">ODS 15 - Vida terrestre</option>
+                    <option value="ods16">ODS 16 - Paz, justiça e instituições eficazes</option>
+                    <option value="ods17">ODS 17 - Parcerias e meios de implementação</option>
+                </select>
+            </div>
+        </div>
+    </section>
+    <main class="main-content">
+        <!-- Seção de cards dos projetos em destaque -->
+        <section class="cards-section">
+            <!-- Título da seção de projetos -->
+            <h2 class="section-title">Projetos em Destaque</h2>
+            <!-- Grid de cards dos projetos -->
+            <div class="cards-grid" id="projects-grid">
+                <!-- Cada card representa um projeto de ONG -->
+                <!-- ODS 1 -->
+                <div class="card projeto-card ods1">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Projeto Esperança</h3>
+                        <p>Combate à pobreza extrema com distribuição de cestas básicas e capacitação profissional.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 1:</strong> Erradicação da pobreza</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Ação Solidária</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods1">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Renda para Todos</h3>
+                        <p>Geração de renda para famílias em situação de vulnerabilidade social.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 1:</strong> Erradicação da pobreza</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Mãos Unidas</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 2 -->
+                <div class="card projeto-card ods2">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Horta Comunitária</h3>
+                        <p>Implantação de hortas urbanas para garantir alimentação saudável e sustentável.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 2:</strong> Fome zero e agricultura sustentável</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Verde Vida</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods2">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Alimente-se Bem</h3>
+                        <p>Educação nutricional e distribuição de alimentos para famílias carentes.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 2:</strong> Fome zero e agricultura sustentável</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Mesa Farta</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 3 -->
+                <div class="card projeto-card ods3">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Projeto Saúde em Movimento</h3>
+                        <p>Promove atividades físicas e acompanhamento médico gratuito em comunidades carentes.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 3:</strong> Saúde e bem-estar</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Vida Ativa</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods3">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Saúde para Todos</h3>
+                        <p>Campanhas de vacinação e prevenção de doenças em áreas vulneráveis.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 3:</strong> Saúde e bem-estar</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Bem Viver</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 4 -->
+                <div class="card projeto-card ods4">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Projeto Futuro Digital</h3>
+                        <p>O projeto visa ensinar informática básica para crianças em situação de vulnerabilidade, promovendo inclusão digital e oportunidades de futuro.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 4:</strong> Educação de qualidade</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Casa Menina Mulher</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods4">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Educação para o Amanhã</h3>
+                        <p>Oferece reforço escolar e acesso à leitura para crianças e adolescentes.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 4:</strong> Educação de qualidade</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Ler é Viver</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 5 -->
+                <div class="card projeto-card ods5">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Projeto Igualdade Já</h3>
+                        <p>Oferece oficinas e palestras sobre igualdade de gênero e empoderamento feminino.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 5:</strong> Igualdade de gênero</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Mulheres Unidas</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods5">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Mulheres no Comando</h3>
+                        <p>Capacitação profissional e apoio ao empreendedorismo feminino.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 5:</strong> Igualdade de gênero</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Elas Empreendem</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 6 -->
+                <div class="card projeto-card ods6">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Projeto Água para Todos</h3>
+                        <p>Leva acesso à água potável para comunidades rurais, promovendo saúde e bem-estar.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 6:</strong> Água potável e saneamento</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Água Viva</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods6">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Saneamento para Viver</h3>
+                        <p>Projetos de saneamento básico em comunidades periféricas.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 6:</strong> Água potável e saneamento</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Vida Limpa</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 7 -->
+                <div class="card projeto-card ods7">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Projeto Energia Limpa</h3>
+                        <p>Capacita jovens para instalação de painéis solares, incentivando energia acessível e sustentável.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 7:</strong> Energia limpa e acessível</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Sol para Todos</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods7">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Energia para o Futuro</h3>
+                        <p>Instalação de sistemas solares em escolas públicas.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 7:</strong> Energia limpa e acessível</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Energia Viva</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 8 -->
+                <div class="card projeto-card ods8">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Projeto Futuro Digital</h3>
+                        <p>O projeto visa ensinar informática básica para crianças em situação de vulnerabilidade, promovendo inclusão digital e oportunidades de futuro.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 8:</strong> Trabalho decente e crescimento econômico</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Casa Menina Mulher</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods8">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Trabalho Jovem</h3>
+                        <p>Capacitação e inserção de jovens no mercado de trabalho.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 8:</strong> Trabalho decente e crescimento econômico</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Juventude Ativa</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 9 -->
+                <div class="card projeto-card ods9">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Inovação Social</h3>
+                        <p>Fomento a startups sociais e inovação em comunidades.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 9:</strong> Indústria, inovação e infraestrutura</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Inova Comunidade</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods9">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Infraestrutura para Todos</h3>
+                        <p>Melhoria de estradas e acesso a serviços básicos em áreas rurais.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 9:</strong> Indústria, inovação e infraestrutura</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Estrada Nova</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 10 -->
+                <div class="card projeto-card ods10">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Inclusão Sem Barreiras</h3>
+                        <p>Projetos de acessibilidade e inclusão de pessoas com deficiência.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 10:</strong> Redução das desigualdades</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Acessível Já</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods10">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Diversidade em Foco</h3>
+                        <p>Promoção da diversidade e combate à discriminação.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 10:</strong> Redução das desigualdades</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Diversidade Viva</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 11 -->
+                <div class="card projeto-card ods11">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Cidade Sustentável</h3>
+                        <p>Projetos de mobilidade urbana e espaços verdes em cidades.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 11:</strong> Cidades e comunidades sustentáveis</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Cidade Verde</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods11">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Comunidade Viva</h3>
+                        <p>Revitalização de espaços públicos e promoção da convivência comunitária.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 11:</strong> Cidades e comunidades sustentáveis</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Viva Bairro</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 12 -->
+                <div class="card projeto-card ods12">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Consumo Consciente</h3>
+                        <p>Campanhas de redução de desperdício e reciclagem.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 12:</strong> Consumo e produção responsáveis</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">EcoAção</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods12">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Recicla Mais</h3>
+                        <p>Coleta seletiva e educação ambiental em escolas.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 12:</strong> Consumo e produção responsáveis</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Recicla Recife</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 13 -->
+                <div class="card projeto-card ods13">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Clima em Ação</h3>
+                        <p>Projetos de reflorestamento e educação ambiental sobre mudanças climáticas.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 13:</strong> Ação contra a mudança global do clima</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Verde Futuro</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods13">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Energia Verde</h3>
+                        <p>Promoção de fontes renováveis e redução de carbono.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 13:</strong> Ação contra a mudança global do clima</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Clima Positivo</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 14 -->
+                <div class="card projeto-card ods14">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Mar Limpo</h3>
+                        <p>Limpeza de praias e educação sobre poluição marinha.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 14:</strong> Vida na água</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Onda Azul</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods14">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Proteja o Oceano</h3>
+                        <p>Conservação de espécies marinhas e combate à pesca predatória.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 14:</strong> Vida na água</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Vida Marinha</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 15 -->
+                <div class="card projeto-card ods15">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Floresta Viva</h3>
+                        <p>Recuperação de áreas degradadas e proteção da fauna e flora.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 15:</strong> Vida terrestre</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Natureza Ativa</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods15">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Biodiversidade em Foco</h3>
+                        <p>Educação ambiental e proteção de espécies ameaçadas.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 15:</strong> Vida terrestre</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">EcoTerra</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 16 -->
+                <div class="card projeto-card ods16">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Justiça para Todos</h3>
+                        <p>Assistência jurídica gratuita e promoção dos direitos humanos.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 16:</strong> Paz, justiça e instituições eficazes</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Direito Já</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods16">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Cidadania Ativa</h3>
+                        <p>Educação para cidadania e participação social.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 16:</strong> Paz, justiça e instituições eficazes</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Vozes Livres</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <!-- ODS 17 -->
+                <div class="card projeto-card ods17">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Parcerias do Bem</h3>
+                        <p>Articulação de redes de ONGs para potencializar resultados sociais.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 17:</strong> Parcerias e meios de implementação</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Rede Solidária</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+                <div class="card projeto-card ods17">
+                    <div class="card-header" style="color:#2F5FA9; font-weight:700;">Projeto ONG</div>
+                    <div class="card-body">
+                        <h3 style="color:#18192b;">Colaboração que Transforma</h3>
+                        <p>Projetos em parceria com empresas para impacto social.</p>
+                        <ul class="card-info-list">
+                            <li><strong>ODS 17:</strong> Parcerias e meios de implementação</li>
+                        </ul>
+                        <div class="card-credenciais-title">ONG Responsável</div>
+                        <div class="card-credenciais">
+                            <span class="card-credencial">Ação Coletiva</span>
+                        </div>
+                        <button class="btn btn-main">Entrar em contato</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        // Função para filtrar os cards de projetos conforme seleção dos filtros
+        function filterAll() {
+            var ong = document.getElementById('ong-filter').value;
+            var ods = document.getElementById('ods-filter').value;
+            var project = document.getElementById('project-filter').value;
+            var cards = document.querySelectorAll('.cards-grid .card');
+            cards.forEach(function(card) {
+                var show = true;
+                // Filtro por ONG (busca pelo nome da ONG no cartão)
+                if (ong !== 'all') {
+                    var credenciais = card.querySelector('.card-credencial');
+                    if (!credenciais || credenciais.textContent.trim() !== ong) show = false;
+                }
+                // Filtro por ODS
+                if (ods !== 'all' && !card.classList.contains(ods)) show = false;
+                // Filtro por Projeto (busca pelo nome do projeto no h3)
+                if (project !== 'all') {
+                    var projectName = card.querySelector('h3');
+                    if (!projectName || projectName.textContent.trim() !== project) show = false;
+                }
+                card.style.display = show ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
