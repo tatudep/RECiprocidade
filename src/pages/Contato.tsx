@@ -90,7 +90,7 @@ const Contato = () => {
                     <Mail className="h-6 w-6 text-green-600" />
                     <div>
                       <h4 className="font-semibold text-gray-900">E-mail</h4>
-                      <p className="text-gray-600">contato@reciprocidade.org.br</p>
+                      <p className="text-gray-600">contato@cin.ufpe.br</p>
                     </div>
                   </div>
 
@@ -98,7 +98,7 @@ const Contato = () => {
                     <Phone className="h-6 w-6 text-green-600" />
                     <div>
                       <h4 className="font-semibold text-gray-900">Telefone</h4>
-                      <p className="text-gray-600">(11) 3456-7890</p>
+                      <p className="text-gray-600">(81) 2126-8430</p>
                     </div>
                   </div>
 
@@ -107,8 +107,8 @@ const Contato = () => {
                     <div>
                       <h4 className="font-semibold text-gray-900">Endereço</h4>
                       <p className="text-gray-600">
-                        Rua dos Empreendedores, 123<br />
-                        São Paulo - SP, 01234-567
+                      Av. Jornalista Aníbal Fernandes, s/n<br />
+                      Cidade Universitária Recife - PE, 50740-560
                       </p>
                     </div>
                   </div>
@@ -118,8 +118,8 @@ const Contato = () => {
                     <div>
                       <h4 className="font-semibold text-gray-900">Horário de Atendimento</h4>
                       <p className="text-gray-600">
-                        Segunda a Sexta: 9h às 18h<br />
-                        Sábado: 9h às 14h
+                        Segunda a Sexta: 8h às 18h<br />
+                        Sábado: 8h às 12h
                       </p>
                     </div>
                   </div>
