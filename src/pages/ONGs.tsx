@@ -1,14 +1,14 @@
 import React from 'react';
-import Header from '@/components/Header';
-import { Card, CardContent } from '@/components/ui/card';
+import Header from '@/components/organisms/Header';
+import { Card, CardContent } from '@/components/atoms/ui/card';
 import { Heart, Users, Target, Handshake } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms/ui/button';
 import { Link } from 'react-router-dom';
 
 const ONGs = () => {
   const ongsParceiras = [
     {
-      nome: "Instituto Verde Vida",
+      nome: "Instituto Casa Amarela Social",
       area: "Meio Ambiente",
       ods: ["13. Ação Climática", "15. Vida Terrestre"],
       missao: "Preservação de florestas e educação ambiental",
@@ -16,7 +16,7 @@ const ONGs = () => {
       logo: "🌳"
     },
     {
-      nome: "Educação Para Todos",
+      nome: "Programa Quem Ama Cuida",
       area: "Educação",
       ods: ["4. Educação de Qualidade", "10. Redução das Desigualdades"],
       missao: "Acesso à educação de qualidade para comunidades carentes",
@@ -24,7 +24,7 @@ const ONGs = () => {
       logo: "📚"
     },
     {
-      nome: "Saúde e Esperança",
+      nome: "Casa da Comunidade Pirou Geral",
       area: "Saúde",
       ods: ["3. Saúde e Bem-Estar", "1. Erradicação da Pobreza"],
       missao: "Atendimento médico gratuito em comunidades vulneráveis",
@@ -151,7 +151,7 @@ const ONGs = () => {
             Cadastre-se em nossa plataforma e conecte-se com empresas que querem ajudar sua causa.
           </p>
           <Link to="/ongs/cadastro">
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
+            <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100 border-white">
               Cadastrar ONG
               <Heart className="ml-2 h-5 w-5" />
             </Button>

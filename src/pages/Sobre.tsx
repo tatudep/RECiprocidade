@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '@/components/Header';
-import { Card, CardContent } from '@/components/ui/card';
+import Header from '@/components/organisms/Header';
+import { Card, CardContent } from '@/components/atoms/ui/card';
 import { Users, Target, Heart, HandHeart, Building2, Handshake } from 'lucide-react';
 
 const Sobre = () => {

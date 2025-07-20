@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import Header from '@/components/Header';
+import { Button } from '@/components/atoms/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/ui/card';
+import { Input } from '@/components/atoms/ui/input';
+import { Label } from '@/components/atoms/ui/label';
+import { Textarea } from '@/components/atoms/ui/textarea';
+import { Checkbox } from '@/components/atoms/ui/checkbox';
+import Header from '@/components/organisms/Header';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
