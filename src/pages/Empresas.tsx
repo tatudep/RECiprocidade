@@ -1,35 +1,35 @@
 import React from 'react';
-import Header from '@/components/Header';
-import { Card, CardContent } from '@/components/ui/card';
+import Header from '@/components/organisms/Header';
+import { Card, CardContent } from '@/components/atoms/ui/card';
 import { Building2, Users, Heart, Target } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms/ui/button';
 import { Link } from 'react-router-dom';
 
 const Empresas = () => {
   const empresasParceiras = [
     {
-      nome: "TechSolutions",
-      setor: "Tecnologia",
+      nome: "Chesf",
+      setor: "Engenharia e tecnologia",
       ods: ["4. Educação de Qualidade", "9. Inovação e Infraestrutura"],
       apoio: "Capacitação digital para ONGs",
       logo: "🏢"
     },
     {
-      nome: "EcoEnergy",
-      setor: "Energia Renovável",
+      nome: "Vitarella",
+      setor: "Indústria e Alimentos",
       ods: ["7. Energia Limpa", "13. Ação Climática"],
       apoio: "Instalação de painéis solares",
       logo: "⚡"
     },
     {
-      nome: "AgroVerde",
+      nome: "Unilever",
       setor: "Agronegócio",
       ods: ["2. Fome Zero", "15. Vida Terrestre"],
       apoio: "Doação de alimentos orgânicos",
       logo: "🌱"
     },
     {
-      nome: "HealthCare+",
+      nome: "Unimed",
       setor: "Saúde",
       ods: ["3. Saúde e Bem-Estar", "10. Redução das Desigualdades"],
       apoio: "Atendimento médico gratuito",
@@ -142,7 +142,7 @@ const Empresas = () => {
             Junte-se à nossa rede de empresas comprometidas com o impacto social positivo.
           </p>
           <Link to="/empresas/cadastro">
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 border-white">
               Cadastrar Empresa
               <Building2 className="ml-2 h-5 w-5" />
             </Button>

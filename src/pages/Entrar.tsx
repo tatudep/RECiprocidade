@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Header from '@/components/Header';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Header from '@/components/organisms/Header';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/ui/card';
+import { Button } from '@/components/atoms/ui/button';
+import { Input } from '@/components/atoms/ui/input';
+import { Label } from '@/components/atoms/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/ui/tabs';
 import { Building2, Heart, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

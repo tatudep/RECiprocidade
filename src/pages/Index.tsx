@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Heart, Target, HandHeart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import Header from '@/components/Header';
-import FeaturedCompanies from '@/components/FeaturedCompanies';
-import SDGsSection from '@/components/SDGsSection';
-import StatsSection from '@/components/StatsSection';
+import { Button } from '@/components/atoms/ui/button';
+import { Card, CardContent } from '@/components/atoms/ui/card';
+import Header from '@/components/organisms/Header';
+import FeaturedCompanies from '@/components/organisms/FeaturedCompanies';
+import SDGsSection from '@/components/organisms/SDGsSection';
+import StatsSection from '@/components/organisms/StatsSection';
 
 const Index = () => {
   return (
