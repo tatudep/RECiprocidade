@@ -1,0 +1,66 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo para Usuário (para autenticação de login)
+model Usuario {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
+  password String // Senha (será hashed no backend)
+  role     String @default("user") // 'user', 'ong', 'empresa', 'admin'
+
+  // Relacionamento 1:1 com ONG
+  ong   ONG?    @relation(fields: [ongId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ongId String? @unique @db.ObjectId
+
+  // Relacionamento 1:1 com Empresa
+  empresa   Empresa? @relation(fields: [empresaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  empresaId String?  @unique @db.ObjectId
+}
+
+// Modelo para ONG
+model ONG {
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  nome                   String
+  cnpj                   String   @unique
+  areaAtuacao            String
+  anoFundacao            Int
+  missao                 String
+  principaisProjetos     String
+  website                String?
+  telefone               String
+  enderecoCompleto       String
+  odsTrabalhados         String[]
+  principaisNecessidades String
+  numeroBeneficiarios    Int?
+  numeroVoluntarios      Int?
+
+  // Campo de relacionamento de volta para Usuario (sem @relation aqui)
+  usuario Usuario?
+}
+
+// Modelo para Empresa
+model Empresa {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  nome             String
+  cnpj             String   @unique
+  setorAtuacao     String
+  porteEmpresa     String
+  descricao        String
+  website          String?
+  telefone         String
+  enderecoCompleto String
+  odsInteresse     String[]
+  porqueApoiarOngs String
+
+  // Campo de relacionamento de volta para Usuario (sem @relation aqui)
+  usuario Usuario?
+}
