@@ -27,3 +27,4 @@ dist-ssr
 # Variáveis de Ambiente e Segredos
 .env
 /API/.env
+API/prisma/.env
