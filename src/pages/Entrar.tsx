@@ -1,22 +1,98 @@
-import React, { useState } from 'react';
-import Header from '@/components/organisms/Header';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/ui/card';
-import { Button } from '@/components/atoms/ui/button';
-import { Input } from '@/components/atoms/ui/input';
-import { Label } from '@/components/atoms/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/ui/tabs';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Header from '../components/organisms/Header';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/atoms/ui/card';
+import { Button } from '../components/atoms/ui/button';
+import { Input } from '../components/atoms/ui/input';
+import { Label } from '../components/atoms/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/atoms/ui/tabs';
 import { Building2, Heart, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../hooks/use-toast';
 
 const Entrar = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login, isLoggedIn } = useAuth();
+  const { toast } = useToast();
+
+  // Redirecionar se já estiver logado
+  useEffect(() => {
+    if (isLoggedIn) {
+      const from = location.state?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
+    }
+  }, [isLoggedIn, navigate, location]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // Simulação de API de login - substitua pela sua implementação real
+      if (loginData.email && loginData.password) {
+        // Dados mockados para teste
+        const mockUser = {
+          id: '1',
+          nome: 'João Silva',
+          email: loginData.email,
+          tipo_usuario: 'empresa' as const
+        };
+        
+        const mockToken = 'mock-jwt-token-' + Date.now();
+        
+        // Simular delay da API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        login(mockUser, mockToken);
+        
+        toast({
+          title: "Login realizado com sucesso!",
+          description: `Bem-vindo(a), ${mockUser.nome}!`,
+        });
+
+        // Redirecionar para a página de origem ou dashboard
+        const from = location.state?.from?.pathname || '/dashboard';
+        navigate(from, { replace: true });
+      } else {
+        toast({
+          title: "Erro no login",
+          description: "Por favor, preencha todos os campos.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro no login",
+        description: "Credenciais inválidas. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setLoginData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-md mx-auto px-4 py-12">
+      <div className="max-w-md mx-auto px-4 pt-24 pb-12">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Bem-vindo à RECiprocidade
@@ -39,42 +115,73 @@ const Entrar = () => {
                 <CardTitle className="text-center">Entrar na sua conta</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="email">E-mail</Label>
-                  <Input id="email" type="email" placeholder="seu@email.com" />
-                </div>
-
-                <div>
-                  <Label htmlFor="password">Senha</Label>
-                  <div className="relative">
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div>
+                    <Label htmlFor="email">E-mail</Label>
                     <Input 
-                      id="password" 
-                      type={showPassword ? "text" : "password"} 
-                      placeholder="Sua senha" 
+                      id="email" 
+                      type="email" 
+                      placeholder="seu@email.com"
+                      value={loginData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required
                     />
-                    <button
-                      type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
                   </div>
-                </div>
 
-                <div className="flex items-center justify-between text-sm">
-                  <label className="flex items-center">
-                    <input type="checkbox" className="mr-2" />
-                    Lembrar de mim
-                  </label>
-                  <a href="#" className="text-green-600 hover:text-green-700">
-                    Esqueceu a senha?
-                  </a>
-                </div>
+                  <div>
+                    <Label htmlFor="password">Senha</Label>
+                    <div className="relative">
+                      <Input 
+                        id="password" 
+                        type={showPassword ? "text" : "password"} 
+                        placeholder="Sua senha"
+                        value={loginData.password}
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
+                  </div>
 
-                <Button className="w-full bg-green-600 hover:bg-green-700">
-                  Entrar
-                </Button>
+                  <div className="flex items-center justify-between text-sm">
+                    <label className="flex items-center">
+                      <input type="checkbox" className="mr-2" />
+                      Lembrar de mim
+                    </label>
+                    <a href="#" className="text-green-600 hover:text-green-700">
+                      Esqueceu a senha?
+                    </a>
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-green-600 hover:bg-green-700"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Entrando...' : 'Entrar'}
+                  </Button>
+
+                  {/* Botão para teste rápido */}
+                  <Button 
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      setLoginData({
+                        email: 'teste@email.com',
+                        password: '123456'
+                      });
+                    }}
+                  >
+                    Preencher dados de teste
+                  </Button>
+                </form>
 
                 <div className="text-center text-sm text-gray-600">
                   Não tem uma conta?{' '}

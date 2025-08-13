@@ -41,7 +41,7 @@ const Empresas = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-6xl mx-auto px-4 py-12">
+  <div className="max-w-6xl mx-auto px-4 pt-24 pb-12">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
@@ -135,7 +135,6 @@ const Empresas = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
         <div className="bg-blue-600 rounded-xl p-12 text-white text-center">
           <h2 className="text-3xl font-bold mb-6">Sua empresa quer fazer parte?</h2>
           <p className="text-xl text-blue-100 mb-8">
