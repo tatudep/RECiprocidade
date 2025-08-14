@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Header from "../components/organisms/Header";
 import { Button } from "../components/atoms/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/atoms/ui/card";
@@ -6,12 +6,18 @@ import { Badge } from "../components/atoms/ui/badge";
 import { Input } from "../components/atoms/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/atoms/ui/select";
 import { Calendar, Users, MapPin, Search, Filter, Eye } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/atoms/ui/dialog";
 import { Link } from "react-router-dom";
 
 export default function Projetos() {
   const [filtroCategoria, setFiltroCategoria] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("");
   const [busca, setBusca] = useState("");
+  const [odsSelecionadas, setOdsSelecionadas] = useState<number[]>([]);
+  const [localizacao, setLocalizacao] = useState("");
+  const [dataDe, setDataDe] = useState<string>("");
+  const [dataAte, setDataAte] = useState<string>("");
+  const [openFiltros, setOpenFiltros] = useState(false);
 
   const [projetos] = useState([
     {
@@ -103,14 +109,18 @@ export default function Projetos() {
   const categorias = ["Meio Ambiente", "Educação", "Saúde", "Tecnologia", "Alimentação", "Energia", "Comunidade"];
   const statusOptions = ["Ativo", "Em Andamento", "Concluído"];
 
-  const projetosFiltrados = projetos.filter(projeto => {
+  const projetosFiltrados = useMemo(() => projetos.filter(projeto => {
     const matchBusca = projeto.titulo.toLowerCase().includes(busca.toLowerCase()) ||
                      projeto.descricao.toLowerCase().includes(busca.toLowerCase());
     const matchCategoria = !filtroCategoria || projeto.categoria === filtroCategoria;
     const matchStatus = !filtroStatus || projeto.status === filtroStatus;
+    const matchODS = odsSelecionadas.length === 0 || odsSelecionadas.every(o => projeto.ods.includes(o));
+    const matchLocal = !localizacao || (projeto.localizacao?.toLowerCase().includes(localizacao.toLowerCase()));
+    const matchDataDe = !dataDe || (projeto.dataCriacao >= dataDe);
+    const matchDataAte = !dataAte || (projeto.dataCriacao <= dataAte);
     
-    return matchBusca && matchCategoria && matchStatus;
-  });
+    return matchBusca && matchCategoria && matchStatus && matchODS && matchLocal && matchDataDe && matchDataAte;
+  }), [projetos, busca, filtroCategoria, filtroStatus, odsSelecionadas, localizacao, dataDe, dataAte]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -125,7 +135,7 @@ export default function Projetos() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
+  <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Projetos em Aberto</h1>
           <p className="text-gray-600">Descubra e participe de projetos de sustentabilidade</p>
@@ -173,10 +183,77 @@ export default function Projetos() {
                 </SelectContent>
               </Select>
 
-              <Button variant="outline" className="flex items-center gap-2">
-                <Filter className="h-4 w-4" />
-                Mais Filtros
-              </Button>
+              <Dialog open={openFiltros} onOpenChange={setOpenFiltros}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    Mais Filtros
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Mais Filtros</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm text-gray-600">ODS</label>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(n => {
+                            const active = odsSelecionadas.includes(n);
+                            return (
+                              <Badge
+                                key={n}
+                                variant={active ? "default" : "outline"}
+                                className={`cursor-pointer select-none ${active ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                                onClick={() => setOdsSelecionadas(prev => prev.includes(n) ? prev.filter(i => i !== n) : [...prev, n])}
+                              >
+                                ODS {n}
+                              </Badge>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-600">Localização</label>
+                        <Input placeholder="Cidade/Estado" className="mt-2" value={localizacao} onChange={(e) => setLocalizacao(e.target.value)} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm text-gray-600">Data de Criação (de)</label>
+                        <Input type="date" className="mt-2" value={dataDe} onChange={(e) => setDataDe(e.target.value)} />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-600">Data de Criação (até)</label>
+                        <Input type="date" className="mt-2" value={dataAte} onChange={(e) => setDataAte(e.target.value)} />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Status</label>
+                      <div className="grid grid-cols-3 gap-2 mt-2">
+                        {['Ativo', 'Em Andamento', 'Concluído'].map(s => {
+                          const active = filtroStatus === s;
+                          return (
+                            <Button
+                              key={s}
+                              variant={active ? 'default' : 'outline'}
+                              className={`w-full ${active ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                              onClick={() => setFiltroStatus(s)}
+                            >
+                              {s}
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-2 pt-2">
+                      <Button variant="outline" onClick={() => { setOdsSelecionadas([]); setLocalizacao(""); setDataDe(""); setDataAte(""); setFiltroStatus(""); }}>Limpar</Button>
+                      <Button className="bg-green-600 hover:bg-green-700" onClick={() => setOpenFiltros(false)}>Aplicar</Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </CardContent>
         </Card>
@@ -271,7 +348,7 @@ export default function Projetos() {
                 </div>
 
                 <div className="flex gap-2">
-                  <Link to={`/projeto/${projeto.id}`} className="flex-1">
+                  <Link to={`/projetos/${projeto.id}`} className="flex-1">
                     <Button className="w-full bg-green-600 hover:bg-green-700">
                       <Eye className="w-4 h-4 mr-2" />
                       Ver Detalhes

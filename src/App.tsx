@@ -4,6 +4,7 @@ import { TooltipProvider } from "./components/atoms/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ProjectsProvider } from "./contexts/ProjectsContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Empresas from "./pages/Empresas";
@@ -16,6 +17,8 @@ import Perfil from "./pages/Perfil";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import CriarProjeto from "./pages/CriarProjeto";
+import ProjetoDetalhes from "./pages/ProjetoDetalhes";
+import ProjetoEditar from "./pages/ProjetoEditar";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +26,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
+        <ProjectsProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -67,6 +71,22 @@ const App = () => (
               } 
             />
             <Route 
+              path="/projetos/:id" 
+              element={
+                <ProtectedRoute>
+                  <ProjetoDetalhes />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/projetos/:id/editar" 
+              element={
+                <ProtectedRoute>
+                  <ProjetoEditar />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/criar-projeto" 
               element={
                 <ProtectedRoute>
@@ -87,6 +107,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        </ProjectsProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

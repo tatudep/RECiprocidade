@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/organisms/Header";
 import { Button } from "../components/atoms/ui/button";
@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "../hooks/use-toast";
+import { useProjects } from "../contexts/ProjectsContext";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/atoms/ui/dialog";
 
 export default function DashboardPrincipal() {
   const { toast } = useToast();
@@ -29,71 +31,31 @@ export default function DashboardPrincipal() {
       q.set("tab", activeTab);
       navigate({ pathname: location.pathname, search: q.toString() }, { replace: true });
     }
-  }, [activeTab]);
+    // Include location in deps so pathname/search remain in sync
+  }, [activeTab, location.pathname, location.search, navigate]);
 
-  // Estados do Dashboard
-  const [projetos] = useState([
-    {
-      id: 1,
-      titulo: "Reflorestamento Urbano",
-      descricao: "Projeto para plantar árvores em áreas urbanas degradadas",
-      categoria: "Meio Ambiente",
-      dataCriacao: "2024-01-15",
-      status: "Ativo",
-      participantes: 25,
-      ods: [13, 15]
-    },
-    {
-      id: 2,
-      titulo: "Educação Digital para Idosos",
-      descricao: "Ensino de tecnologia básica para terceira idade",
-      categoria: "Educação",
-      dataCriacao: "2024-02-03",
-      status: "Concluído",
-      participantes: 18,
-      ods: [4, 10]
-    },
-    {
-      id: 3,
-      titulo: "Horta Comunitária",
-      descricao: "Criação de hortas em comunidades carentes",
-      categoria: "Alimentação",
-      dataCriacao: "2024-02-20",
-      status: "Em Andamento",
-      participantes: 42,
-      ods: [2, 11]
-    }
-  ]);
+  // Projetos do contexto
+  const { myProjects: projetos, publicProjects: projetosPublicos, deleteProject } = useProjects();
+  const [buscaExplorar, setBuscaExplorar] = useState("");
+  const [categoriaExplorar, setCategoriaExplorar] = useState("");
+  const [odsExplorar, setOdsExplorar] = useState<number[]>([]);
+  const [locExplorar, setLocExplorar] = useState("");
+  const [deExplorar, setDeExplorar] = useState("");
+  const [ateExplorar, setAteExplorar] = useState("");
+  const [statusExplorar, setStatusExplorar] = useState("");
+  const [openFiltrosExplorar, setOpenFiltrosExplorar] = useState(false);
 
-  // Estados dos Projetos Públicos
-  const [projetosPublicos] = useState([
-    {
-      id: 4,
-      titulo: "Energia Solar Comunitária",
-      descricao: "Instalação de painéis solares em centros comunitários para reduzir custos de energia.",
-      categoria: "Energia",
-      autor: "Solar Para Todos",
-      dataCriacao: "2024-02-25",
-      status: "Ativo",
-      participantes: 12,
-      vagas: 8,
-      localizacao: "Recife, PE",
-      ods: [7, 13]
-    },
-    {
-      id: 5,
-      titulo: "Capacitação Profissional Jovens",
-      descricao: "Programa de capacitação profissional para jovens em situação de vulnerabilidade social.",
-      categoria: "Educação",
-      autor: "Fundação Futuro",
-      dataCriacao: "2024-03-01",
-      status: "Ativo",
-      participantes: 35,
-      vagas: 20,
-      localizacao: "Salvador, BA",
-      ods: [8, 10]
+  // Confirmar remoção
+  const handleDelete = (id: number) => {
+    const ok = confirm('Deseja remover este projeto?');
+    if (!ok) return;
+    const removed = deleteProject(id);
+    if (removed) {
+      toast({ title: 'Projeto removido', description: 'O projeto foi removido com sucesso.' });
+    } else {
+      toast({ title: 'Não encontrado', description: 'Projeto não foi encontrado.', variant: 'destructive' });
     }
-  ]);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -104,11 +66,30 @@ export default function DashboardPrincipal() {
     }
   };
 
+  const categorias = useMemo(() => {
+    const set = new Set<string>();
+    projetosPublicos.forEach(p => set.add(p.categoria));
+    return Array.from(set);
+  }, [projetosPublicos]);
+
+  const projetosPublicosFiltrados = useMemo(() => {
+    return projetosPublicos.filter(p => {
+      const matchBusca = !buscaExplorar || p.titulo.toLowerCase().includes(buscaExplorar.toLowerCase()) || p.descricao.toLowerCase().includes(buscaExplorar.toLowerCase());
+      const matchCategoria = !categoriaExplorar || p.categoria === categoriaExplorar;
+      const matchStatus = !statusExplorar || p.status === statusExplorar as any;
+      const matchODS = odsExplorar.length === 0 || odsExplorar.every(o => p.ods.includes(o));
+      const matchLocal = !locExplorar || (p.localizacao?.toLowerCase().includes(locExplorar.toLowerCase()));
+      const matchDe = !deExplorar || (p.dataCriacao >= deExplorar);
+      const matchAte = !ateExplorar || (p.dataCriacao <= ateExplorar);
+      return matchBusca && matchCategoria && matchStatus && matchODS && matchLocal && matchDe && matchAte;
+    });
+  }, [projetosPublicos, buscaExplorar, categoriaExplorar, statusExplorar, odsExplorar, locExplorar, deExplorar, ateExplorar]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
+  <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
           <p className="text-gray-600">Gerencie seus projetos e explore oportunidades</p>
@@ -169,7 +150,7 @@ export default function DashboardPrincipal() {
                     <div>
                       <p className="text-sm text-gray-600">Participantes Total</p>
                       <p className="text-2xl font-bold text-gray-900">
-                        {projetos.reduce((total, projeto) => total + projeto.participantes, 0)}
+                        {projetos.reduce((total, projeto) => total + (projeto.participantes || 0), 0)}
                       </p>
                     </div>
                     <div className="bg-purple-100 p-3 rounded-full">
@@ -281,15 +262,15 @@ export default function DashboardPrincipal() {
                     </div>
 
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button variant="outline" size="sm" className="flex-1" onClick={() => navigate(`/projetos/${projeto.id}`)}>
                         <Eye className="w-4 h-4 mr-1" />
                         Ver
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button variant="outline" size="sm" className="flex-1" onClick={() => navigate(`/projetos/${projeto.id}/editar`)}>
                         <Edit className="w-4 h-4 mr-1" />
                         Editar
                       </Button>
-                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDelete(projeto.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -314,30 +295,95 @@ export default function DashboardPrincipal() {
                     <Input
                       placeholder="Buscar projetos..."
                       className="pl-10"
+                      value={buscaExplorar}
+                      onChange={(e) => setBuscaExplorar(e.target.value)}
                     />
                   </div>
                   
-                  <Select>
+                  <Select value={categoriaExplorar} onValueChange={setCategoriaExplorar}>
                     <SelectTrigger>
                       <SelectValue placeholder="Categoria" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="meio-ambiente">Meio Ambiente</SelectItem>
-                      <SelectItem value="educacao">Educação</SelectItem>
-                      <SelectItem value="energia">Energia</SelectItem>
+                      <SelectItem value="">Todas</SelectItem>
+                      {categorias.map(c => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
 
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <Filter className="h-4 w-4" />
-                    Mais Filtros
-                  </Button>
+                  <Dialog open={openFiltrosExplorar} onOpenChange={setOpenFiltrosExplorar}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <Filter className="h-4 w-4" />
+                        Mais Filtros
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Mais Filtros</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="text-sm text-gray-600">ODS</label>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(n => {
+                                const active = odsExplorar.includes(n);
+                                return (
+                                  <Badge
+                                    key={n}
+                                    variant={active ? 'default' : 'outline'}
+                                    className={`cursor-pointer select-none ${active ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                                    onClick={() => setOdsExplorar(prev => prev.includes(n) ? prev.filter(i => i !== n) : [...prev, n])}
+                                  >
+                                    ODS {n}
+                                  </Badge>
+                                );
+                              })}
+                            </div>
+                          </div>
+                          <div>
+                            <label className="text-sm text-gray-600">Localização</label>
+                            <Input placeholder="Cidade/Estado" className="mt-2" value={locExplorar} onChange={(e) => setLocExplorar(e.target.value)} />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="text-sm text-gray-600">Data de Criação (de)</label>
+                            <Input type="date" className="mt-2" value={deExplorar} onChange={(e) => setDeExplorar(e.target.value)} />
+                          </div>
+                          <div>
+                            <label className="text-sm text-gray-600">Data de Criação (até)</label>
+                            <Input type="date" className="mt-2" value={ateExplorar} onChange={(e) => setAteExplorar(e.target.value)} />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-sm text-gray-600">Status</label>
+                          <div className="grid grid-cols-3 gap-2 mt-2">
+                            {['Ativo', 'Em Andamento', 'Concluído'].map(s => {
+                              const active = statusExplorar === s;
+                              return (
+                                <Button key={s} variant={active ? 'default' : 'outline'} className={`w-full ${active ? 'bg-green-600 hover:bg-green-700' : ''}`} onClick={() => setStatusExplorar(s)}>
+                                  {s}
+                                </Button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                        <div className="flex justify-end gap-2 pt-2">
+                          <Button variant="outline" onClick={() => { setOdsExplorar([]); setLocExplorar(''); setDeExplorar(''); setAteExplorar(''); setStatusExplorar(''); setCategoriaExplorar(''); setBuscaExplorar(''); }}>Limpar</Button>
+                          <Button className="bg-green-600 hover:bg-green-700" onClick={() => setOpenFiltrosExplorar(false)}>Aplicar</Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardContent>
             </Card>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projetosPublicos.map((projeto) => (
+              {projetosPublicosFiltrados.map((projeto) => (
                 <Card key={projeto.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -377,7 +423,7 @@ export default function DashboardPrincipal() {
                       </div>
                     </div>
 
-                    <Link to={`/projeto/${projeto.id}`}>
+                    <Link to={`/projetos/${projeto.id}`}>
                       <Button className="w-full bg-green-600 hover:bg-green-700">
                         <Eye className="w-4 h-4 mr-2" />
                         Ver Detalhes
@@ -387,6 +433,12 @@ export default function DashboardPrincipal() {
                 </Card>
               ))}
             </div>
+
+            {projetosPublicosFiltrados.length === 0 && (
+              <div className="text-center py-12 text-gray-600">
+                Nenhum projeto encontrado com os filtros aplicados.
+              </div>
+            )}
           </TabsContent>
 
           {/* Perfil removido */}

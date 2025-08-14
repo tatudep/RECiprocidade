@@ -8,11 +8,14 @@ import { Label } from "../components/atoms/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/atoms/ui/select";
 import { Checkbox } from "../components/atoms/ui/checkbox";
 import { ArrowLeft, Save } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "../hooks/use-toast";
+import { useProjects } from "../contexts/ProjectsContext";
 
 export default function CriarProjeto() {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { addProject } = useProjects();
   const [formData, setFormData] = useState({
     titulo: "",
     descricao: "",
@@ -79,17 +82,27 @@ export default function CriarProjeto() {
       return;
     }
 
+    const created = addProject({
+      titulo: formData.titulo,
+      descricao: formData.descricao,
+      categoria: formData.categoria,
+      localizacao: formData.localizacao,
+      ods: formData.ods_selecionados,
+    });
+
     toast({
       title: "Projeto criado!",
       description: "Seu projeto foi criado com sucesso.",
     });
+
+    navigate(`/projetos/${created.id}`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
+  <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="flex items-center gap-4 mb-8">
           <Link to="/dashboard">
             <Button variant="outline" size="sm">

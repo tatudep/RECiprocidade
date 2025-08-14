@@ -22,7 +22,7 @@ const Entrar = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isLoggedIn } = useAuth();
+  const { login, register, isLoggedIn } = useAuth();
   const { toast } = useToast();
 
   // Redirecionar se já estiver logado
@@ -38,38 +38,11 @@ const Entrar = () => {
     setIsLoading(true);
 
     try {
-      // Simulação de API de login - substitua pela sua implementação real
-      if (loginData.email && loginData.password) {
-        // Dados mockados para teste
-        const mockUser = {
-          id: '1',
-          nome: 'João Silva',
-          email: loginData.email,
-          tipo_usuario: 'empresa' as const
-        };
-        
-        const mockToken = 'mock-jwt-token-' + Date.now();
-        
-        // Simular delay da API
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        login(mockUser, mockToken);
-        
-        toast({
-          title: "Login realizado com sucesso!",
-          description: `Bem-vindo(a), ${mockUser.nome}!`,
-        });
-
-        // Redirecionar para a página de origem ou dashboard
-        const from = location.state?.from?.pathname || '/dashboard';
-        navigate(from, { replace: true });
-      } else {
-        toast({
-          title: "Erro no login",
-          description: "Por favor, preencha todos os campos.",
-          variant: "destructive",
-        });
-      }
+      if (!loginData.email || !loginData.password) throw new Error('missing');
+      await login(loginData.email, loginData.password);
+      toast({ title: 'Login realizado com sucesso!' });
+      const from = location.state?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
     } catch (error) {
       toast({
         title: "Erro no login",
@@ -174,7 +147,7 @@ const Entrar = () => {
                     className="w-full"
                     onClick={() => {
                       setLoginData({
-                        email: 'teste@email.com',
+                        email: 'admin@reciprocidade.com',
                         password: '123456'
                       });
                     }}
@@ -279,7 +252,30 @@ const Entrar = () => {
                   </label>
                 </div>
 
-                <Button className="w-full bg-green-600 hover:bg-green-700">
+                <Button
+                  className="w-full bg-green-600 hover:bg-green-700"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    const nome = (document.getElementById('nome') as HTMLInputElement)?.value;
+                    const email = (document.getElementById('email-register') as HTMLInputElement)?.value;
+                    const password = (document.getElementById('password-register') as HTMLInputElement)?.value;
+                    const confirm = (document.getElementById('confirm-password') as HTMLInputElement)?.value;
+                    if (!email || !password || password !== confirm) {
+                      toast({ title: 'Erro no cadastro', description: 'Verifique os campos.', variant: 'destructive' });
+                      return;
+                    }
+                    try {
+                      setIsLoading(true);
+                      await register(email, password, nome);
+                      toast({ title: 'Conta criada!', description: 'Verifique seu e-mail para confirmar (se aplicável).' });
+                      navigate('/dashboard', { replace: true });
+                    } catch (err) {
+                      toast({ title: 'Erro no cadastro', description: 'Tente novamente.', variant: 'destructive' });
+                    } finally {
+                      setIsLoading(false);
+                    }
+                  }}
+                >
                   Criar Conta
                 </Button>
 
