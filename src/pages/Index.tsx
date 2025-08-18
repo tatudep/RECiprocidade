@@ -73,7 +73,7 @@ export default function Index() {
               Transforme sua responsabilidade social em impacto real. 
               Conecte-se com projetos alinhados aos seus valores e objetivos de sustentabilidade.
             </p>
-            <Link to="/empresas/cadastro">
+            <Link to="/entrar">
               <Button className="bg-blue-600 hover:bg-blue-700">
                 Cadastrar Empresa
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -118,16 +118,16 @@ export default function Index() {
               </h3>
               <div className="grid grid-cols-3 gap-8 max-w-md mx-auto">
                 <div>
-                  <div className="text-3xl font-bold text-green-600">150+</div>
+                  <div className="text-3xl font-bold text-green-600">20+</div>
                   <div className="text-sm text-gray-600">Projetos</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-blue-600">50+</div>
-                  <div className="text-sm text-gray-600">Organizações</div>
+                  <div className="text-3xl font-bold text-blue-600">40+</div>
+                  <div className="text-sm text-gray-600">ONGs Cadastradas</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-purple-600">10k+</div>
-                  <div className="text-sm text-gray-600">Beneficiados</div>
+                  <div className="text-3xl font-bold text-purple-600">100+</div>
+                  <div className="text-sm text-gray-600">Empresas Interessadas</div>
                 </div>
               </div>
             </div>

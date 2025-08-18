@@ -28,7 +28,7 @@ const Entrar = () => {
   // Redirecionar se já estiver logado
   useEffect(() => {
     if (isLoggedIn) {
-      const from = location.state?.from?.pathname || '/dashboard';
+      const from = location.state?.from?.pathname || '/empresas/cadastro';
       navigate(from, { replace: true });
     }
   }, [isLoggedIn, navigate, location]);
@@ -39,10 +39,8 @@ const Entrar = () => {
 
     try {
       if (!loginData.email || !loginData.password) throw new Error('missing');
-      await login(loginData.email, loginData.password);
-      toast({ title: 'Login realizado com sucesso!' });
-      const from = location.state?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
+  await login(loginData.email, loginData.password);
+  toast({ title: 'Login realizado com sucesso!' });
     } catch (error) {
       toast({
         title: "Erro no login",
@@ -268,7 +266,6 @@ const Entrar = () => {
                       setIsLoading(true);
                       await register(email, password, nome);
                       toast({ title: 'Conta criada!', description: 'Verifique seu e-mail para confirmar (se aplicável).' });
-                      navigate('/dashboard', { replace: true });
                     } catch (err) {
                       toast({ title: 'Erro no cadastro', description: 'Tente novamente.', variant: 'destructive' });
                     } finally {
@@ -296,13 +293,7 @@ const Entrar = () => {
         {/* Quick Access Links */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600 mb-4">Ou acesse diretamente:</p>
-          <div className="grid grid-cols-2 gap-4">
-            <Link to="/empresas/cadastro">
-              <Button variant="outline" className="w-full">
-                <Building2 className="mr-2 h-4 w-4" />
-                Cadastro Empresa
-              </Button>
-            </Link>
+          <div className="grid grid-cols-1 gap-4">
             <Link to="/ongs/cadastro">
               <Button variant="outline" className="w-full">
                 <Heart className="mr-2 h-4 w-4" />

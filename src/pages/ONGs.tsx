@@ -70,7 +70,7 @@ const ONGs = () => {
           <Card className="text-center shadow-md">
             <CardContent className="p-6">
               <Heart className="h-12 w-12 text-green-600 mx-auto mb-3" />
-              <div className="text-3xl font-bold text-gray-900 mb-1">180+</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">40+</div>
               <div className="text-gray-600">ONGs Cadastradas</div>
             </CardContent>
           </Card>
@@ -86,7 +86,7 @@ const ONGs = () => {
           <Card className="text-center shadow-md">
             <CardContent className="p-6">
               <Target className="h-12 w-12 text-purple-600 mx-auto mb-3" />
-              <div className="text-3xl font-bold text-gray-900 mb-1">320+</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">20+</div>
               <div className="text-gray-600">Projetos Ativos</div>
             </CardContent>
           </Card>

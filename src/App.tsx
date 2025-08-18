@@ -2,12 +2,11 @@ import { Toaster } from "./components/atoms/ui/toaster";
 import { Toaster as Sonner } from "./components/atoms/ui/sonner";
 import { TooltipProvider } from "./components/atoms/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProjectsProvider } from "./contexts/ProjectsContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
-import Empresas from "./pages/Empresas";
 import EmpresasCadastro from "./pages/EmpresasCadastro";
 import ONGs from "./pages/ONGs";
 import ONGsCadastro from "./pages/ONGsCadastro";
@@ -19,6 +18,7 @@ import Dashboard from "./pages/Dashboard";
 import CriarProjeto from "./pages/CriarProjeto";
 import ProjetoDetalhes from "./pages/ProjetoDetalhes";
 import ProjetoEditar from "./pages/ProjetoEditar";
+import Empresas from "./pages/Empresas";
 
 const queryClient = new QueryClient();
 

@@ -1,4 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+// ErrorBoundary simples para capturar erros de renderização
+class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean, error: any}> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error: any, info: any) {}
+  render() {
+    if (this.state.hasError) {
+      return <div className="text-center py-12 text-red-600">Erro ao renderizar projetos: {String(this.state.error)}</div>;
+    }
+    return this.props.children;
+  }
+}
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/organisms/Header";
 import { Button } from "../components/atoms/ui/button";
@@ -75,7 +92,7 @@ export default function DashboardPrincipal() {
   const projetosPublicosFiltrados = useMemo(() => {
     return projetosPublicos.filter(p => {
       const matchBusca = !buscaExplorar || p.titulo.toLowerCase().includes(buscaExplorar.toLowerCase()) || p.descricao.toLowerCase().includes(buscaExplorar.toLowerCase());
-      const matchCategoria = !categoriaExplorar || p.categoria === categoriaExplorar;
+      const matchCategoria = !categoriaExplorar || categoriaExplorar === 'todas' || p.categoria === categoriaExplorar;
       const matchStatus = !statusExplorar || p.status === statusExplorar as any;
       const matchODS = odsExplorar.length === 0 || odsExplorar.every(o => p.ods.includes(o));
       const matchLocal = !locExplorar || (p.localizacao?.toLowerCase().includes(locExplorar.toLowerCase()));
@@ -280,165 +297,163 @@ export default function DashboardPrincipal() {
             </div>
           </TabsContent>
 
+
           {/* Explorar Projetos */}
           <TabsContent value="explorar" className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Explorar Projetos</h2>
               <p className="text-gray-600">Descubra e participe de projetos de sustentabilidade</p>
             </div>
-
-            <Card>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      placeholder="Buscar projetos..."
-                      className="pl-10"
-                      value={buscaExplorar}
-                      onChange={(e) => setBuscaExplorar(e.target.value)}
-                    />
-                  </div>
-                  
-                  <Select value={categoriaExplorar} onValueChange={setCategoriaExplorar}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Categoria" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="">Todas</SelectItem>
-                      {categorias.map(c => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <Dialog open={openFiltrosExplorar} onOpenChange={setOpenFiltrosExplorar}>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" className="flex items-center gap-2">
-                        <Filter className="h-4 w-4" />
-                        Mais Filtros
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Mais Filtros</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-sm text-gray-600">ODS</label>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                              {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(n => {
-                                const active = odsExplorar.includes(n);
-                                return (
-                                  <Badge
-                                    key={n}
-                                    variant={active ? 'default' : 'outline'}
-                                    className={`cursor-pointer select-none ${active ? 'bg-green-600 hover:bg-green-700' : ''}`}
-                                    onClick={() => setOdsExplorar(prev => prev.includes(n) ? prev.filter(i => i !== n) : [...prev, n])}
-                                  >
-                                    ODS {n}
-                                  </Badge>
-                                );
-                              })}
+            {/* Tratamento de erro visual */}
+            <React.Suspense fallback={<div className="text-center py-12 text-gray-600">Carregando projetos...</div>}>
+              <ErrorBoundary>
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          placeholder="Buscar projetos..."
+                          className="pl-10"
+                          value={buscaExplorar}
+                          onChange={(e) => setBuscaExplorar(e.target.value)}
+                        />
+                      </div>
+                      <Select value={categoriaExplorar} onValueChange={setCategoriaExplorar}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Categoria" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="todas">Todas</SelectItem>
+                          {categorias.map(c => (
+                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Dialog open={openFiltrosExplorar} onOpenChange={setOpenFiltrosExplorar}>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="flex items-center gap-2">
+                            <Filter className="h-4 w-4" />
+                            Mais Filtros
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Mais Filtros</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <label className="text-sm text-gray-600">ODS</label>
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                  {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(n => {
+                                    const active = odsExplorar.includes(n);
+                                    return (
+                                      <Badge
+                                        key={n}
+                                        variant={active ? 'default' : 'outline'}
+                                        className={`cursor-pointer select-none ${active ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                                        onClick={() => setOdsExplorar(prev => prev.includes(n) ? prev.filter(i => i !== n) : [...prev, n])}
+                                      >
+                                        ODS {n}
+                                      </Badge>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                              <div>
+                                <label className="text-sm text-gray-600">Localização</label>
+                                <Input placeholder="Cidade/Estado" className="mt-2" value={locExplorar} onChange={(e) => setLocExplorar(e.target.value)} />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <label className="text-sm text-gray-600">Data de Criação (de)</label>
+                                <Input type="date" className="mt-2" value={deExplorar} onChange={(e) => setDeExplorar(e.target.value)} />
+                              </div>
+                              <div>
+                                <label className="text-sm text-gray-600">Data de Criação (até)</label>
+                                <Input type="date" className="mt-2" value={ateExplorar} onChange={(e) => setAteExplorar(e.target.value)} />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-sm text-gray-600">Status</label>
+                              <div className="grid grid-cols-3 gap-2 mt-2">
+                                {['Ativo', 'Em Andamento', 'Concluído'].map(s => {
+                                  const active = statusExplorar === s;
+                                  return (
+                                    <Button key={s} variant={active ? 'default' : 'outline'} className={`w-full ${active ? 'bg-green-600 hover:bg-green-700' : ''}`} onClick={() => setStatusExplorar(s)}>
+                                      {s}
+                                    </Button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                            <div className="flex justify-end gap-2 pt-2">
+                              <Button variant="outline" onClick={() => { setOdsExplorar([]); setLocExplorar(''); setDeExplorar(''); setAteExplorar(''); setStatusExplorar(''); setCategoriaExplorar(''); setBuscaExplorar(''); }}>Limpar</Button>
+                              <Button className="bg-green-600 hover:bg-green-700" onClick={() => setOpenFiltrosExplorar(false)}>Aplicar</Button>
                             </div>
                           </div>
-                          <div>
-                            <label className="text-sm text-gray-600">Localização</label>
-                            <Input placeholder="Cidade/Estado" className="mt-2" value={locExplorar} onChange={(e) => setLocExplorar(e.target.value)} />
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-sm text-gray-600">Data de Criação (de)</label>
-                            <Input type="date" className="mt-2" value={deExplorar} onChange={(e) => setDeExplorar(e.target.value)} />
-                          </div>
-                          <div>
-                            <label className="text-sm text-gray-600">Data de Criação (até)</label>
-                            <Input type="date" className="mt-2" value={ateExplorar} onChange={(e) => setAteExplorar(e.target.value)} />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm text-gray-600">Status</label>
-                          <div className="grid grid-cols-3 gap-2 mt-2">
-                            {['Ativo', 'Em Andamento', 'Concluído'].map(s => {
-                              const active = statusExplorar === s;
-                              return (
-                                <Button key={s} variant={active ? 'default' : 'outline'} className={`w-full ${active ? 'bg-green-600 hover:bg-green-700' : ''}`} onClick={() => setStatusExplorar(s)}>
-                                  {s}
-                                </Button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                        <div className="flex justify-end gap-2 pt-2">
-                          <Button variant="outline" onClick={() => { setOdsExplorar([]); setLocExplorar(''); setDeExplorar(''); setAteExplorar(''); setStatusExplorar(''); setCategoriaExplorar(''); setBuscaExplorar(''); }}>Limpar</Button>
-                          <Button className="bg-green-600 hover:bg-green-700" onClick={() => setOpenFiltrosExplorar(false)}>Aplicar</Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projetosPublicosFiltrados.map((projeto) => (
-                <Card key={projeto.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg font-semibold text-gray-900">
-                        {projeto.titulo}
-                      </CardTitle>
-                      <Badge className={getStatusColor(projeto.status)}>
-                        {projeto.status}
-                      </Badge>
+                        </DialogContent>
+                      </Dialog>
                     </div>
-                    <p className="text-sm text-gray-600">por {projeto.autor}</p>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <p className="text-gray-600 mb-4 text-sm">
-                      {projeto.descricao}
-                    </p>
-                    
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <MapPin className="w-4 h-4 mr-2" />
-                        {projeto.localizacao}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Users className="w-4 h-4 mr-2" />
-                        {projeto.participantes} participantes • {projeto.vagas} vagas
-                      </div>
-                    </div>
-
-                    <div className="mb-4">
-                      <div className="flex flex-wrap gap-1">
-                        {projeto.ods.map((ods) => (
-                          <Badge key={ods} variant="outline" className="text-xs">
-                            ODS {ods}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    <Link to={`/projetos/${projeto.id}`}>
-                      <Button className="w-full bg-green-600 hover:bg-green-700">
-                        <Eye className="w-4 h-4 mr-2" />
-                        Ver Detalhes
-                      </Button>
-                    </Link>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-
-            {projetosPublicosFiltrados.length === 0 && (
-              <div className="text-center py-12 text-gray-600">
-                Nenhum projeto encontrado com os filtros aplicados.
-              </div>
-            )}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {Array.isArray(projetosPublicosFiltrados) && projetosPublicosFiltrados.length > 0 ? (
+                    projetosPublicosFiltrados.map((projeto) => (
+                      <Card key={projeto.id} className="hover:shadow-lg transition-shadow">
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                            <CardTitle className="text-lg font-semibold text-gray-900">
+                              {projeto.titulo}
+                            </CardTitle>
+                            <Badge className={getStatusColor(projeto.status)}>
+                              {projeto.status}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-600">por {projeto.autor}</p>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600 mb-4 text-sm">
+                            {projeto.descricao}
+                          </p>
+                          <div className="space-y-2 mb-4">
+                            <div className="flex items-center text-sm text-gray-500">
+                              <MapPin className="w-4 h-4 mr-2" />
+                              {projeto.localizacao}
+                            </div>
+                            <div className="flex items-center text-sm text-gray-500">
+                              <Users className="w-4 h-4 mr-2" />
+                              {projeto.participantes} participantes • {projeto.vagas} vagas
+                            </div>
+                          </div>
+                          <div className="mb-4">
+                            <div className="flex flex-wrap gap-1">
+                              {projeto.ods.map((ods) => (
+                                <Badge key={ods} variant="outline" className="text-xs">
+                                  ODS {ods}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          <Link to={`/projetos/${projeto.id}`}>
+                            <Button className="w-full bg-green-600 hover:bg-green-700">
+                              <Eye className="w-4 h-4 mr-2" />
+                              Ver Detalhes
+                            </Button>
+                          </Link>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="text-center py-12 text-gray-600">
+                      Nenhum projeto encontrado ou erro ao carregar projetos.
+                    </div>
+                  )}
+                </div>
+              </ErrorBoundary>
+            </React.Suspense>
           </TabsContent>
 
           {/* Perfil removido */}
